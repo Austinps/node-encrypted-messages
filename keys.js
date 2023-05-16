@@ -8,19 +8,14 @@ import inquirer from "inquirer";
 import { getUserCollection } from "./db.js";
 import { hashPassword, comparePassword } from "./hash.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const KEY_LENGTH = 4096;
 
 export async function generateKeys() {
   try {
-    const { passphrase, username } = await inquirer.prompt([
-      {
-        type: "password",
-        name: "passphrase",
-        message: "Enter passphrase to protect the private key:",
-        mask: "*",
-      },
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+
+    const { username } = await inquirer.prompt([
       {
         type: "input",
         name: "username",
@@ -29,22 +24,44 @@ export async function generateKeys() {
       },
     ]);
 
-    const db = await getUserCollection();
+    const { passphrase } = await inquirer.prompt([
+      {
+        type: "password",
+        name: "passphrase",
+        message: "Enter passphrase to protect the private key:",
+        mask: "*",
+      },
+    ]);
 
-    // Check if the user already exists in the database
-    const existingUser = await db.findOne({ username });
+    const userCollection = await getUserCollection();
+
+    const existingUser = await userCollection.findOne({ username });
     if (existingUser) {
-      // User already exists, verify the password
       const passwordMatch = await comparePassword(
         passphrase,
         existingUser.password
       );
+
       if (!passwordMatch) {
-        console.log("Incorrect password.");
-        return;
+        throw new Error("Incorrect password.");
       }
 
-      console.log("User already exists. RSA keys will not be generated again.");
+      const { publicKey } = generateKeyPairSync("rsa", {
+        modulusLength: KEY_LENGTH,
+        publicKeyEncoding: {
+          type: "pkcs1",
+          format: "pem",
+        },
+      });
+
+      const hashedPassword = await hashPassword(passphrase);
+
+      await userCollection.updateOne(
+        { username },
+        { $set: { publicKey, password: hashedPassword } }
+      );
+
+      console.log("RSA keys updated successfully.");
       return;
     }
 
@@ -70,17 +87,24 @@ export async function generateKeys() {
     await fs.writeFile(publicKeyPath, publicKey);
 
     const hashedPassword = await hashPassword(passphrase);
-    await db.insertOne({ username, publicKey, password: hashedPassword });
+    await userCollection.insertOne({
+      username,
+      publicKey,
+      password: hashedPassword,
+    });
 
     console.log("RSA keys generated and saved successfully.");
   } catch (error) {
     console.error("Failed to generate and save RSA keys:", error);
-    process.exit(1);
+    throw error;
   }
 }
 
 export async function sharePublicKey() {
   try {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+
     const publicKeyPath = path.join(__dirname, "keys", "public_key.pem");
     const publicKey = await fs.readFile(publicKeyPath, "utf8");
 
@@ -93,8 +117,11 @@ export async function sharePublicKey() {
       },
     ]);
 
-    const db = await getUserCollection();
-    await db.insertOne({ username: username, publicKey: publicKey });
+    const userCollection = await getUserCollection();
+    await userCollection.insertOne({
+      username,
+      publicKey,
+    });
 
     console.log("Your public key has been shared.");
   } catch (error) {

@@ -1,5 +1,3 @@
-// db.js
-
 import { MongoClient } from "mongodb";
 
 let dbClient;
@@ -7,26 +5,37 @@ let dbClient;
 export async function connectToDatabase() {
   try {
     if (!dbClient) {
-      dbClient = new MongoClient(process.env.MONGODB_URI, {
+      const client = new MongoClient(process.env.MONGODB_URI, {
         useUnifiedTopology: true,
       });
-      await dbClient.connect();
+
+      await client.connect();
+
+      dbClient = client;
     }
+
     return dbClient.db(process.env.DB_NAME);
   } catch (error) {
     console.error("Failed to connect to the database:", error);
-    process.exit(1);
+    throw error;
   }
 }
 
-// controller.js
+let cachedDb;
+
+export async function getDatabase() {
+  if (!cachedDb) {
+    cachedDb = await connectToDatabase();
+  }
+  return cachedDb;
+}
 
 export async function getUserCollection() {
-  const db = await connectToDatabase();
+  const db = await getDatabase();
   return db.collection("users");
 }
 
 export async function getMessageCollection() {
-  const db = await connectToDatabase();
+  const db = await getDatabase();
   return db.collection("messages");
 }

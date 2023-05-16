@@ -11,7 +11,7 @@ export async function encryptMessage(message, publicKey) {
     return encrypted.toString("base64");
   } catch (error) {
     console.error("Failed to encrypt message:", error);
-    process.exit(1);
+    throw error; // Throw the error instead of exiting the process
   }
 }
 
@@ -19,21 +19,22 @@ export async function decryptMessage(encryptedMessage, privateKeyPath) {
   try {
     const privateKey = await fs.readFile(privateKeyPath, "utf8");
     const buffer = Buffer.from(encryptedMessage, "base64");
+    const passphrase = readlineSync.question(
+      "Enter passphrase to decrypt the private key: ",
+      {
+        hideEchoBack: true,
+      }
+    );
     const decrypted = privateDecrypt(
       {
         key: privateKey,
-        passphrase: readlineSync.question(
-          "Enter passphrase to decrypt the private key: ",
-          {
-            hideEchoBack: true,
-          }
-        ),
+        passphrase: passphrase,
       },
       buffer
     );
     return decrypted.toString("utf8");
   } catch (error) {
     console.error("Failed to decrypt message:", error);
-    process.exit(1);
+    throw error; // Throw the error instead of exiting the process
   }
 }

@@ -2,16 +2,15 @@
 
 import bcrypt from "bcrypt";
 
-const SALT_ROUNDS = 10;
-
 export async function hashPassword(password) {
   try {
-    const salt = await bcrypt.genSalt(SALT_ROUNDS);
+    const saltRounds = parseInt(process.env.SALT_ROUNDS, 10);
+    const salt = await bcrypt.genSalt(saltRounds);
     const hashedPassword = await bcrypt.hash(password, salt);
     return hashedPassword;
   } catch (error) {
     console.error("Failed to hash password:", error);
-    process.exit(1);
+    throw error; // Throw the error instead of exiting the process
   }
 }
 
@@ -21,6 +20,6 @@ export async function comparePassword(password, hashedPassword) {
     return isMatch;
   } catch (error) {
     console.error("Failed to compare passwords:", error);
-    process.exit(1);
+    throw error; // Throw the error instead of exiting the process
   }
 }
