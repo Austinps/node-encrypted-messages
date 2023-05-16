@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 import { generateKeyPairSync } from "crypto";
 import { promises as fs } from "fs";
 import inquirer from "inquirer";
-import { connectToDatabase } from "./db.js";
+import { getUserCollection } from "./db.js";
 import { hashPassword, comparePassword } from "./hash.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -29,7 +29,7 @@ export async function generateKeys() {
       },
     ]);
 
-    const db = await connectToDatabase();
+    const db = await getUserCollection();
 
     // Check if the user already exists in the database
     const existingUser = await db.findOne({ username });
@@ -93,7 +93,7 @@ export async function sharePublicKey() {
       },
     ]);
 
-    const db = await connectToDatabase();
+    const db = await getUserCollection();
     await db.insertOne({ username: username, publicKey: publicKey });
 
     console.log("Your public key has been shared.");

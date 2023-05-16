@@ -3,8 +3,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { promises as fs } from "fs";
 import inquirer from "inquirer";
-import { connectToMessageCollection } from "./db.js";
-import { connectToDatabase } from "./db.js";
+import { getMessageCollection } from "./db.js";
+import { getUserCollection } from "./db.js";
 import { encryptMessage, decryptMessage } from "./encryption.js";
 import { comparePassword } from "./hash.js";
 
@@ -13,8 +13,8 @@ const __dirname = path.dirname(__filename);
 
 export async function sendMessage() {
   try {
-    const db = await connectToDatabase();
-    const messageDb = await connectToMessageCollection();
+    const db = await getUserCollection();
+    const messageDb = await getMessageCollection();
 
     const { recipientUsername, message } = await inquirer.prompt([
       {
@@ -84,8 +84,8 @@ export async function sendMessage() {
 
 export async function readMessage() {
   try {
-    const db = await connectToDatabase();
-    const messageDb = await connectToMessageCollection();
+    const db = await getUserCollection();
+    const messageDb = await getMessageCollection();
 
     const { username, password } = await inquirer.prompt([
       {

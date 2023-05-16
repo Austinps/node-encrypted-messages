@@ -1,8 +1,10 @@
 // index.js
-
+import dotenv from "dotenv";
 import { program } from "commander";
 import { generateKeys, sharePublicKey } from "./keys.js";
 import { sendMessage, readMessage } from "./messages.js";
+
+dotenv.config();
 
 async function main() {
   program
