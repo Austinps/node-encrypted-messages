@@ -1,9 +1,9 @@
 {
-  "name": "node-encrypted-chat",
+  "name": "node-encrypted-cli",
   "version": "1.0.0",
   "description": "node chat app cli",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
