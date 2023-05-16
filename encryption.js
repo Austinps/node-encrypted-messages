@@ -2,7 +2,7 @@
 
 import { publicEncrypt, privateDecrypt } from "crypto";
 import { promises as fs } from "fs";
-import readlineSync from "readline-sync";
+import inquirer from "inquirer";
 
 export async function encryptMessage(message, publicKey) {
   try {
@@ -19,22 +19,27 @@ export async function decryptMessage(encryptedMessage, privateKeyPath) {
   try {
     const privateKey = await fs.readFile(privateKeyPath, "utf8");
     const buffer = Buffer.from(encryptedMessage, "base64");
-    const passphrase = readlineSync.question(
-      "Enter passphrase to decrypt the private key: ",
+
+    const passphrasePrompt = await inquirer.prompt([
       {
-        hideEchoBack: true,
-      }
-    );
+        type: "password",
+        name: "passphrase",
+        message: "Enter passphrase to decrypt the private key:",
+        mask: "*",
+      },
+    ]);
+
     const decrypted = privateDecrypt(
       {
         key: privateKey,
-        passphrase: passphrase,
+        passphrase: passphrasePrompt.passphrase,
       },
       buffer
     );
+
     return decrypted.toString("utf8");
   } catch (error) {
     console.error("Failed to decrypt message:", error);
-    throw error; // Throw the error instead of exiting the process
+    throw new Error("Failed to decrypt message"); // Throw a new error instead of the original error
   }
 }

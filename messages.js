@@ -98,6 +98,7 @@ export async function sendMessage() {
     });
 
     console.log("Message sent successfully.");
+    process.exit(); // Exit the app after sending the message
   } catch (error) {
     console.error("Failed to send message:", error);
     process.exit(1);

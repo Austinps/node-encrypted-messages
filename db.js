@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+import logger from "./logger.js";
 
 let dbClient;
 
@@ -16,7 +17,7 @@ export async function connectToDatabase() {
 
     return dbClient.db(process.env.DB_NAME);
   } catch (error) {
-    console.error("Failed to connect to the database:", error);
+    logger.error("Failed to connect to the database:", error);
     throw error;
   }
 }
