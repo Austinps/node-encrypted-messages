@@ -1,0 +1,23 @@
+{
+  "name": "node-encrypted-chat",
+  "version": "1.0.0",
+  "description": "node chat app cli",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Austinps/node-encrypted-chat.git"
+  },
+  "author": "austinps",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Austinps/node-encrypted-chat/issues"
+  },
+  "homepage": "https://github.com/Austinps/node-encrypted-chat#readme",
+  "dependencies": {
+    "commander": "^10.0.1",
+    "inquirer": "^9.2.3"
+  }
+}
