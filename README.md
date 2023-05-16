@@ -1,4 +1,4 @@
-# App Name: Node Encrypted Chat
+# App Name: Node Encrypted CLI
 
 ## Description:
 
