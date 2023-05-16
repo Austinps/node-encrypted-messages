@@ -9,18 +9,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Austinps/node-encrypted-chat.git"
+    "url": "git+https://github.com/Austinps/node-encrypted-cli.git"
   },
   "author": "austinps",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Austinps/node-encrypted-chat/issues"
+    "url": "https://github.com/Austinps/node-encrypted-cli/issues"
   },
-  "homepage": "https://github.com/Austinps/node-encrypted-chat#readme",
+  "homepage": "https://github.com/Austinps/node-encrypted-cli#readme",
   "dependencies": {
+    "chalk": "^5.2.0",
+    "chalk-animation": "^2.0.3",
     "commander": "^10.0.1",
     "inquirer": "^9.2.3",
     "mongodb": "^5.5.0",
+    "nanospinner": "^1.1.0",
     "readline-sync": "^1.4.10"
   }
 }
