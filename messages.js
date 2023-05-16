@@ -1,8 +1,15 @@
 // messages.js
-
+import path from "path";
+import { fileURLToPath } from "url";
 import { promises as fs } from "fs";
+import inquirer from "inquirer";
 import { connectToMessageCollection } from "./db.js";
 import { connectToDatabase } from "./db.js";
+import { encryptMessage, decryptMessage } from "./encryption.js";
+import { comparePassword } from "./hash.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export async function sendMessage() {
   try {
