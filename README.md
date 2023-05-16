@@ -24,13 +24,36 @@ Run node app.js read-message to read an encrypted message. You will be prompted 
 
 ## Dependencies:
 
-crypto: for cryptographic operations
-fs: for file system operations
-path: for file path manipulation
-mongodb: for connecting to a MongoDB database
-commander: for creating a command-line interface
-inquirer: for interactive prompts
-readline-sync: for synchronous user input
-Configuration:
-MongoDB Connection: Set the environment variable MONGODB_URI to the URI of the MongoDB database you want to use. If not set, it defaults to mongodb://localhost:27017.
-License: This project is licensed under the MIT License.
+#### crypto:
+
+for cryptographic operations
+
+#### fs:
+
+for file system operations
+
+#### path:
+
+for file path manipulation
+
+#### mongodb:
+
+for connecting to a MongoDB database
+
+#### commander:
+
+for creating a command-line interface
+
+#### inquirer:
+
+for interactive prompts
+
+#### readline-sync:
+
+for synchronous user input
+
+## Configuration:
+
+#### MongoDB Connection:
+
+Set the environment variable MONGODB_URI to the URI of the MongoDB database you want to use. If not set, it defaults to mongodb://localhost:27017.
