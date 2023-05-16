@@ -4,15 +4,16 @@ const path = require("path");
 const { MongoClient } = require("mongodb");
 const { program } = require("commander");
 const inquirer = require("inquirer");
+const readlineSync = require("readline-sync");
 
 const KEY_LENGTH = 4096;
-const MONGO_URI = "mongodb://localhost:27017";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017";
 const DB_NAME = "key_exchange";
 const COLLECTION_NAME = "users";
 
 async function connectToDatabase() {
   try {
-    const client = new MongoClient(MONGO_URI, { useUnifiedTopology: true });
+    const client = new MongoClient(MONGODB_URI, { useUnifiedTopology: true });
     await client.connect();
     return client.db(DB_NAME).collection(COLLECTION_NAME);
   } catch (error) {
@@ -38,7 +39,7 @@ async function generateKeys() {
         type: "pkcs1",
         format: "pem",
         cipher: "aes-256-cbc",
-        passphrase: passphrase,
+        passphrase: passphrase.passphrase,
       },
       publicKeyEncoding: {
         type: "pkcs1",
@@ -106,8 +107,7 @@ async function sendMessage() {
     await db.insertOne({
       senderPublicKey: senderPublicKey,
       recipientPublicKey: recipientPublicKey,
-      encryptedMessage: encrypted
-      Message: encryptedMessage,
+      encryptedMessage: encryptedMessage,
     });
 
     console.log("Message sent successfully.");
@@ -163,13 +163,17 @@ async function decryptMessage(encryptedMessage, privateKeyPath) {
   try {
     const privateKey = await fs.readFile(privateKeyPath, "utf8");
     const buffer = Buffer.from(encryptedMessage, "base64");
+    const passphrase = readlineSync.question(
+      "Enter your private key passphrase: ",
+      {
+        hideEchoBack: true,
+        mask: "*",
+      }
+    );
     const decrypted = crypto.privateDecrypt(
       {
         key: privateKey,
-        passphrase: readlineSync.question("Enter your private key passphrase: ", {
-          hideEchoBack: true,
-          mask: "*",
-        }),
+        passphrase: passphrase,
       },
       buffer
     );
@@ -210,4 +214,3 @@ program
   });
 
 program.parse(process.argv);
-
