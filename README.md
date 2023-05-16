@@ -39,18 +39,22 @@ for file path manipulation
 #### mongodb:
 
 for connecting to a MongoDB database
+https://www.npmjs.com/package/mongodb
 
 #### commander:
 
 for creating a command-line interface
+https://www.npmjs.com/package/commander
 
 #### inquirer:
 
 for interactive prompts
+https://www.npmjs.com/package/inquirer
 
 #### readline-sync:
 
 for synchronous user input
+https://www.npmjs.com/package/readline-sync
 
 ## Configuration:
 

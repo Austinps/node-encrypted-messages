@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "node chat app cli",
   "main": "index.js",
+  "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,6 +19,8 @@
   "homepage": "https://github.com/Austinps/node-encrypted-chat#readme",
   "dependencies": {
     "commander": "^10.0.1",
-    "inquirer": "^9.2.3"
+    "inquirer": "^9.2.3",
+    "mongodb": "^5.5.0",
+    "readline-sync": "^1.4.10"
   }
 }

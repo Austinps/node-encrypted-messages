@@ -1,10 +1,10 @@
-const crypto = require("crypto");
-const fs = require("fs").promises;
-const path = require("path");
-const { MongoClient } = require("mongodb");
-const { program } = require("commander");
-const inquirer = require("inquirer");
-const readlineSync = require("readline-sync");
+import crypto from "crypto";
+import fs from "fs/promises";
+import path from "path";
+import { MongoClient } from "mongodb";
+import { program } from "commander";
+import inquirer from "inquirer";
+import readlineSync from "readline-sync";
 
 const KEY_LENGTH = 4096;
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017";
@@ -47,8 +47,16 @@ async function generateKeys() {
       },
     });
 
-    const privateKeyPath = path.join(__dirname, "keys", "private_key.pem");
-    const publicKeyPath = path.join(__dirname, "keys", "public_key.pem");
+    const privateKeyPath = path.join(
+      new URL(import.meta.url).pathname,
+      "keys",
+      "private_key.pem"
+    );
+    const publicKeyPath = path.join(
+      new URL(import.meta.url).pathname,
+      "keys",
+      "public_key.pem"
+    );
 
     await fs.mkdir(path.dirname(privateKeyPath), { recursive: true });
     await fs.writeFile(privateKeyPath, privateKey);
@@ -66,7 +74,11 @@ async function generateKeys() {
 
 async function sharePublicKey() {
   try {
-    const publicKeyPath = path.join(__dirname, "keys", "public_key.pem");
+    const publicKeyPath = path.join(
+      new URL(import.meta.url).pathname,
+      "keys",
+      "public_key.pem"
+    );
     const publicKey = await fs.readFile(publicKeyPath, "utf8");
 
     const db = await connectToDatabase();
@@ -78,7 +90,6 @@ async function sharePublicKey() {
     process.exit(1);
   }
 }
-
 async function sendMessage() {
   try {
     const db = await connectToDatabase();
@@ -101,7 +112,11 @@ async function sendMessage() {
     const encryptedMessage = await encryptMessage(message, recipientPublicKey);
     console.log("Encrypted message:", encryptedMessage);
 
-    const senderPublicKeyPath = path.join(__dirname, "keys", "public_key.pem");
+    const senderPublicKeyPath = path.join(
+      new URL(import.meta.url).pathname,
+      "keys",
+      "public_key.pem"
+    );
     const senderPublicKey = await fs.readFile(senderPublicKeyPath, "utf8");
 
     await db.insertOne({
@@ -136,7 +151,11 @@ async function readMessage() {
       },
     ]);
 
-    const privateKeyPath = path.join(__dirname, "keys", "private_key.pem");
+    const privateKeyPath = path.join(
+      new URL(import.meta.url).pathname,
+      "keys",
+      "private_key.pem"
+    );
     const decryptedMessage = await decryptMessage(
       encryptedMessage,
       privateKeyPath
