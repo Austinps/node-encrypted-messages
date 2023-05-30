@@ -1,4 +1,4 @@
 node_modules/
 .env
-ca.key
-ca.crt
+keys/
+*_key.pem
