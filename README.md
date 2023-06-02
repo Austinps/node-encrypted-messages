@@ -60,4 +60,4 @@ https://www.npmjs.com/package/readline-sync
 
 #### MongoDB Connection:
 
-Set the environment variable MONGODB_URI to the URI of the MongoDB database you want to use. If not set, it default to mongodb://localhost:27017.
+Set the environment variable MONGODB_URI to the URI of the MongoDB database you want to use. If not set, it default to mongodb://127.0.0.1:27017.
