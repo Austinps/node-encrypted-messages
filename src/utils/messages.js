@@ -3,7 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { promises as fs } from "fs";
 import inquirer from "inquirer";
-import { getMessageCollection, getUserCollection } from "./db.js";
+import { getMessageCollection, getUserCollection } from "../db/db.js";
 import { encryptMessage, decryptMessage } from "./encryption.js";
 import { comparePassword } from "./hash.js";
 

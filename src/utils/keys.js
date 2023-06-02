@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 import { generateKeyPairSync } from "crypto";
 import { promises as fs } from "fs";
 import inquirer from "inquirer";
-import { getUserCollection } from "./db.js";
+import { getUserCollection } from "../db/db.js";
 import { hashPassword, comparePassword } from "./hash.js";
 
 const KEY_LENGTH = 4096;

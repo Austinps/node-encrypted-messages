@@ -1,8 +1,8 @@
 // index.js
 import dotenv from "dotenv";
 import { program } from "commander";
-import { generateKeys, sharePublicKey } from "./keys.js";
-import { sendMessage, readMessage } from "./messages.js";
+import { generateKeys, sharePublicKey } from "./src/utils/keys.js";
+import { sendMessage, readMessage } from "./src/utils/messages.js";
 
 dotenv.config();
 
