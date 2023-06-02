@@ -2,7 +2,7 @@
 
 ## Description:
 
-This command-line application allows users to generate RSA key pairs, share public keys, send encrypted messages, and read encrypted messages.
+This command-line application allows users to generate RSA key pairs, share public keys, send encrypted messages, and read encrypted messages. This is a work in progress.
 
 ## Usage:
 
